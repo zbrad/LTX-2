@@ -123,11 +123,19 @@ VIDEO_LATENT_CHANNELS = 128
 # checkpoint the 2.0 step count and STG block.
 LTX_2_4_PARAMS = replace(LTX_2_3_PARAMS, default_image_crf=LTX_2_4_IMAGE_CRF)
 
+# PLACEHOLDER: no 2.5-tuned knobs have been published yet, so this is a byte-for-byte copy of
+# LTX_2_4_PARAMS, kept as its own named row so a 2.5 checkpoint gets an explicit, documented
+# entry instead of silently falling through to "the newest generation it is at or above" (which
+# happens to be 2.4 today, but only by coincidence of there being no higher row). Replace with
+# real values as soon as Lightricks publishes 2.5-specific guidance and drop this comment.
+LTX_2_5_PARAMS = replace(LTX_2_4_PARAMS)
+
 # Params per model generation, newest first. A checkpoint gets the params of the newest
 # generation it is at or above, so an unrecognised *newer* version inherits the closest
 # known one instead of silently falling back to the 2.0 defaults. Adding a generation is
 # one row; anything older than every row falls through to LTX_2_PARAMS.
 _PARAMS_SINCE_VERSION: tuple[tuple[tuple[int, ...], PipelineParams], ...] = (
+    ((2, 5), LTX_2_5_PARAMS),
     ((2, 4), LTX_2_4_PARAMS),
     ((2, 3), LTX_2_3_PARAMS),
 )
